@@ -2,7 +2,7 @@ name: Nightly Build
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "6 18 * * *"
   workflow_dispatch:
   push:
     branches: [test/bad-commit]
