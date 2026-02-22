@@ -3,7 +3,6 @@ name: Nightly Build
 on:
   schedule:
     - cron: "35 18 * * *"
-  workflow_dispatch:
   
 jobs:
   test-and-build:
