@@ -4,9 +4,7 @@ on:
   schedule:
     - cron: "30 18 * * *"
   workflow_dispatch:
-  push:
-    branches: [test/bad-commit]
-    
+  
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
