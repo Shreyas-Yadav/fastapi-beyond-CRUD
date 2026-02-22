@@ -1,0 +1,37 @@
+name: Conventional Commit Checker
+
+on:
+  pull_request:
+    types: [synchronize,opened]
+
+jobs:
+  check_commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check Conventional Commits
+        uses: webiny/action-conventional-commits@v1.0.3
+
+      - name: Close PR
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh pr close ${{ github.event.pull_request.number }}
+          --comment "PR closed: commit messages must follow Conventional Commits format."
+
+      - name: Send email
+        if: failure()
+        uses: hilarion5/send-mail@v1
+        with:
+          smtp-server: ${{ secrets.MAIL_SERVER }}
+          smtp-port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from-email: ${{ secrets.MAIL_USERNAME }}
+          to-email: ${{ secrets.NOTIFY_EMAIL }}
+          subject: ${{ secrets.EMAIL_SUBJECT }}
+          body: ${{ secrets.EMAIL_BODY }}
+          smtp-secure: false
