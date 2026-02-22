@@ -63,3 +63,19 @@ jobs:
           subject: ${{ secrets.EMAIL_SUBJECT }}
           body: ${{ secrets.EMAIL_BODY }}          
           smtp-secure: false
+
+      - name: Send Success email     
+        if: success()
+        uses: hilarion5/send-mail@v1
+        with:
+          smtp-server: ${{ secrets.MAIL_SERVER }}
+          smtp-port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from-email: ${{ secrets.MAIL_USERNAME }}
+          to-email: ${{ secrets.NOTIFY_EMAIL }}
+          subject: "Nightly build successful"
+          body: "Successfully build an image and pushed to dockerhub."           
+          smtp-secure: false
+
+        
